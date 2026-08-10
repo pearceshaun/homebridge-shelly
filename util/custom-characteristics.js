@@ -2,8 +2,8 @@
 module.exports = homebridge => {
   const Characteristic = homebridge.hap.Characteristic
 
-  const Formats = Characteristic.Formats
-  const Perms = Characteristic.Perms
+  const Formats = homebridge.hap.Formats || Characteristic.Formats
+  const Perms = homebridge.hap.Perms || Characteristic.Perms
 
   class ConsumptionCharacteristic extends Characteristic {
     constructor() {
@@ -14,7 +14,7 @@ module.exports = homebridge => {
         minValue: 0,
         maxValue: 65535,
         minStep: 0.1,
-        perms: [Perms.READ, Perms.NOTIFY],
+        perms: [Perms.PAIRED_READ, Perms.NOTIFY],
       })
       this.value = this.getDefaultValue()
     }
@@ -27,7 +27,7 @@ module.exports = homebridge => {
       this.setProps({
         format: Formats.FLOAT,
         unit: 'A',
-        perms: [Perms.READ, Perms.NOTIFY],
+        perms: [Perms.PAIRED_READ, Perms.NOTIFY],
       })
       this.value = this.getDefaultValue()
     }
@@ -40,7 +40,7 @@ module.exports = homebridge => {
       this.setProps({
         format: Formats.FLOAT,
         unit: 'V',
-        perms: [Perms.READ, Perms.NOTIFY],
+        perms: [Perms.PAIRED_READ, Perms.NOTIFY],
       })
       this.value = this.getDefaultValue()
     }

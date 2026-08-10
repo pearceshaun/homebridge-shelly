@@ -3,6 +3,8 @@ module.exports = homebridge => {
   const { Ability } = require('./base')(homebridge)
   const Characteristic = homebridge.hap.Characteristic
   const Service = homebridge.hap.Service
+  // renamed to Battery in hap-nodejs v1 (Homebridge 2.x)
+  const BatteryService = Service.Battery || Service.BatteryService
 
   class BatteryAbility extends Ability {
     /**
@@ -25,7 +27,7 @@ module.exports = homebridge => {
     }
 
     get service() {
-      return this.platformAccessory.getService(Service.BatteryService)
+      return this.platformAccessory.getService(BatteryService)
     }
 
     get level() {
@@ -57,7 +59,7 @@ module.exports = homebridge => {
     }
 
     _createService() {
-      return new Service.BatteryService()
+      return new BatteryService()
         .setCharacteristic(Characteristic.BatteryLevel, this.level)
         .setCharacteristic(Characteristic.ChargingState, this.chargingState)
         .setCharacteristic(Characteristic.StatusLowBattery, this.statusLow)

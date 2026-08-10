@@ -1,0 +1,47 @@
+abilities/battery.js
+  s_af471c348656ac::t_83250fd1b4873e 6-7,30,62
+accessories/base.js
+  s_af471c348656ac::t_bf9cc23ab18d5c 4,55
+accessories/doors.js
+  s_af471c348656ac::t_98f6de2cfdecf9 3,19
+accessories/garage-door-openers.js
+  s_af471c348656ac::t_52086a4c5d50c8 3,20
+accessories/lightbulbs.js
+  s_af471c348656ac::t_ad42950efe53a6 3,32,68,111,149
+accessories/outlets.js
+  s_af471c348656ac::t_3f00f9ed9c2c16 3,27
+accessories/sensors.js
+  s_af471c348656ac::t_7c1bd89e92b2ed 3,28,102,118,134
+accessories/switches.js
+  s_af471c348656ac::t_5322f0006d0ef2 3,22
+accessories/valves.js
+  s_af471c348656ac::t_c6b94780a4f405 3,27
+accessories/window-coverings.js
+  s_af471c348656ac::t_b4dbf64a09aded 3,20
+accessories/windows.js
+  s_af471c348656ac::t_d879def05a45cc 3,19
+package-lock.json
+  s_af471c348656ac::t_fc6aca6061ce09 3,9,33-34,4139,4872,4996
+util/categories.js
+  s_af471c348656ac::t_3d641f54a36be0 1-6
+util/custom-characteristics.js
+  s_af471c348656ac::t_4f37f0210f5521 5-6,17,30,43
+package.json
+  s_af471c348656ac::t_b733399160865c 3,22-23,29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "5b72d88bacf6afbdcb4c968eaa297c1020c4a0be",
+  "prompts": {},
+  "sessions": {
+    "s_af471c348656ac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1b240386-3296-4cdf-8931-5aba2cae9f66",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Shaun Pearce <shaun.pearce@gmail.com>"
+    }
+  }
+}

@@ -50,6 +50,16 @@ module.exports = homebridge => {
     }
 
     /**
+     * Whether a request from HomeKit to change a device property from
+     * `currentValue` to `newValue` can be skipped. Only skips when the device
+     * is online, since an offline device's cached state may be stale and
+     * skipping would silently drop the command.
+     */
+    _isUnchanged(currentValue, newValue) {
+      return this.device.online && currentValue === newValue
+    }
+
+    /**
      * Detaches this ability, removing all references to the device that it was
      * first associated with.
      */
@@ -439,7 +449,7 @@ module.exports = homebridge => {
       const d = this.device
       const nv = this._valueFromHomeKit(newValue)
 
-      if (this.value === nv) {
+      if (this._isUnchanged(this.value, nv)) {
         callback()
         return
       }

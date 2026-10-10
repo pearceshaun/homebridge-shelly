@@ -68,7 +68,7 @@ module.exports = homebridge => {
     async _onSetHandler(newValue, callback) {
       const d = this.device
 
-      if (this.on === newValue) {
+      if (this._isUnchanged(this.on, newValue)) {
         callback()
         return
       }

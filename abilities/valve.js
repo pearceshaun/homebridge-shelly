@@ -97,7 +97,7 @@ module.exports = homebridge => {
       const d = this.device
       const nv = this._activeFromHomeKit(newValue)
 
-      if (this.active === nv) {
+      if (this._isUnchanged(this.active, nv)) {
         callback()
         return
       }

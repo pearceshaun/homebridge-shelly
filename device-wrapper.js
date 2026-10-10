@@ -32,7 +32,7 @@ module.exports = homebridge => {
     }
 
     deviceOnlineHandler() {
-      this.platform.log.debug(
+      this.platform.log.info(
         'Device',
         this.device.type,
         this.device.id,
@@ -43,11 +43,11 @@ module.exports = homebridge => {
     }
 
     deviceOfflineHandler() {
-      this.platform.log.debug(
+      this.platform.log.warn(
         'Device',
         this.device.type,
         this.device.id,
-        'went offline'
+        'went offline (no status updates received); commands will still be sent'
       )
     }
 

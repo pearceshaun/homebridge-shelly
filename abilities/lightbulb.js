@@ -107,7 +107,7 @@ module.exports = homebridge => {
      * Handles changes from HomeKit to the On characteristic.
      */
     _onSetHandler(newValue, callback) {
-      if (this.on !== newValue) {
+      if (!this._isUnchanged(this.on, newValue)) {
         this._updateDeviceLightDebounced()
       }
 
@@ -118,7 +118,7 @@ module.exports = homebridge => {
      * Handles changes from HomeKit to the Brightness characteristic.
      */
     _brightnessSetHandler(newValue, callback) {
-      if (this.brightness !== newValue) {
+      if (!this._isUnchanged(this.brightness, newValue)) {
         this._updateDeviceLightDebounced()
       }
 

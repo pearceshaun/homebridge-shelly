@@ -3,6 +3,10 @@ const shellies = require('shellies')
 
 const AdminServer = require('./admin')
 
+// delays between attempts to start listening for CoIoT status updates, used
+// when the network isn't ready yet (e.g. right after the host boots)
+const START_RETRY_DELAYS = [5000, 10000, 30000, 60000]
+
 module.exports = homebridge => {
   const AccessoryFactory = require('./accessories/factory')(homebridge)
   const DeviceWrapper = require('./device-wrapper')(homebridge)
@@ -32,7 +36,7 @@ module.exports = homebridge => {
         )
 
         this.handleStalePlatformAccessories()
-        shellies.start(this.getNetworkInterface())
+        this.startListening()
 
         if (!this.config.admin || this.config.admin.enabled !== false) {
           // start the admin server
@@ -81,6 +85,26 @@ module.exports = homebridge => {
      * Returns the configured network interface do listen for CoAP messages on,
      * if one has been configured.
      */
+    async startListening(attempt = 0) {
+      try {
+        await shellies.start(this.getNetworkInterface())
+        if (attempt > 0) {
+          this.log.info('Started listening for device status updates')
+        }
+      } catch (e) {
+        // an unhandled rejection here would crash the child bridge, so retry
+        // until the network comes up instead
+        const delay = START_RETRY_DELAYS[
+          Math.min(attempt, START_RETRY_DELAYS.length - 1)
+        ]
+        this.log.warn(
+          `Failed to start listening for device status updates (${e.message}),`,
+          `retrying in ${delay / 1000} second(s)`
+        )
+        setTimeout(() => this.startListening(attempt + 1), delay)
+      }
+    }
+
     getNetworkInterface() {
       const iface = this.config.networkInterface
       if (!iface) {

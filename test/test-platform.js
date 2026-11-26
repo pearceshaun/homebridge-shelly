@@ -95,6 +95,54 @@ describe('ShellyPlatform', function() {
     )
   })
 
+  describe('#startListening()', function() {
+    let clock = null
+
+    beforeEach(function() {
+      clock = sinon.useFakeTimers()
+    })
+
+    it('should not throw or reject when start() fails', async function() {
+      start.rejects(new Error('send ENETUNREACH 224.0.1.187:5683'))
+
+      await platform.startListening().should.be.fulfilled()
+      start.calledOnce.should.be.true()
+    })
+
+    it('should retry with backoff until start() succeeds', async function() {
+      const err = new Error('send ENETUNREACH 224.0.1.187:5683')
+      start.onCall(0).rejects(err)
+      start.onCall(1).rejects(err)
+      start.onCall(2).resolves()
+
+      await platform.startListening()
+      start.callCount.should.equal(1)
+
+      await clock.tickAsync(4999)
+      start.callCount.should.equal(1)
+      await clock.tickAsync(1)
+      start.callCount.should.equal(2)
+
+      await clock.tickAsync(10000)
+      start.callCount.should.equal(3)
+
+      await clock.tickAsync(120000)
+      start.callCount.should.equal(3)
+    })
+
+    it('should keep retrying at the longest delay', async function() {
+      start.rejects(new Error('send ENETUNREACH 224.0.1.187:5683'))
+
+      await platform.startListening()
+      await clock.tickAsync(5000 + 10000 + 30000)
+      start.callCount.should.equal(4)
+      await clock.tickAsync(60000)
+      start.callCount.should.equal(5)
+      await clock.tickAsync(60000)
+      start.callCount.should.equal(6)
+    })
+  })
+
   describe('#configure()', function() {
     it(
       'should invoke setAuthCredentials() when credentials are given',
